@@ -15,11 +15,13 @@ from x256 import x256
 
 __token_file_name__ = '.ghl-token'
 __token_file__ = os.path.join(os.path.expanduser('~'), __token_file_name__)
+__github_url__ = 'https://api.github.com'
 
 
 def get_access_token():
     with open(__token_file__, 'r') as f:
         return f.read().rstrip()
+
 
 def text_color(color):
     (r, g, b) = struct.unpack('BBB', bytes.fromhex(color))
@@ -56,7 +58,7 @@ auth_parser.set_defaults(func=auth_command)
 def list_command(args):
     params = {'access_token': get_access_token()}
 
-    url = 'https://api.github.com/repos/{}/labels'.format(args.repo)
+    url = '{}/repos/{}/labels'.format(__github_url__, args.repo)
     r = requests.get(url, params=params)
     res = r.json()
 
@@ -87,7 +89,7 @@ def create_command(args):
         'color': args.color
     }
 
-    url = 'https://api.github.com/repos/{}/labels'.format(args.repo)
+    url = '{}/repos/{}/labels'.format(__github_url__, args.repo)
     r = requests.post(url, json=payload, params=params)
 
     if r.status_code == 201:
