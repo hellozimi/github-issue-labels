@@ -128,7 +128,8 @@ create_parser.set_defaults(func=create_command)
 
 
 def delete_command(args):
-    question = '⛔️  Are you sure you want to delete \'{}\'?'.format(args.name)
+    name = ' '.join(args.name)
+    question = '⛔️  Are you sure you want to delete \'{}\'?'.format(name)
     prompt = ' [y/N] '
     while not args.force:
         sys.stdout.write(question + prompt)
@@ -139,8 +140,7 @@ def delete_command(args):
             break
 
     params = {'access_token': get_access_token()}
-    url = 'https://api.github.com/repos/{}/labels/{}'.format(args.repo,
-            args.name)
+    url = '{}/repos/{}/labels/{}'.format(__github_url__, args.repo, name)
     r = requests.delete(url, params=params)
     if r.status_code == 204:
         print("🗑  Label successfully removed")
@@ -156,7 +156,7 @@ def delete_command(args):
 
 delete_parser = subparser.add_parser('delete')
 delete_parser.add_argument('repo')
-delete_parser.add_argument('name')
+delete_parser.add_argument('name', nargs='*')
 delete_parser.add_argument('--force', default=False, action='store_true')
 delete_parser.set_defaults(func=delete_command)
 
