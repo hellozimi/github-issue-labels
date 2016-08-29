@@ -30,20 +30,30 @@ def text_color(color):
         return 'white'
     return 'black'
 
+
 def color_validation(value):
     if len(value) != 6:
-        raise argparse.ArgumentTypeError('Color must be 6 characters long without # or 0x')
+        raise argparse.ArgumentTypeError('Color must be 6 characters long'
+                                         'without # or 0x')
     return value
+
+
+def parse_validation_error(name, error):
+    if error['code'] == 'already_exists':
+        return '🚫  The name \'{}\' already exists.'.format(name)
+    elif error['code'] == 'invalid':
+        return '🚫  The field \'{}\' is invalid.'.format(error['field'])
+
+    return None
 
 parser = argparse.ArgumentParser()
 subparser = parser.add_subparsers()
 
+
 def auth_command(args):
-    path = os.path.expanduser('~')
     f = open(__token_file__, 'w', encoding='utf-8')
     print(args.token, file=f)
     f.close()
-
     print('🚀  Authentication stored!')
 
 auth_parser = subparser.add_parser('auth')
@@ -76,7 +86,10 @@ def list_command(args):
         print(fmt)
 
 list_parser = subparser.add_parser('list')
-list_parser.add_argument('repo', help='The owner and repo combined with a slash')
+list_parser.add_argument(
+    'repo',
+    help='The owner and repo combined with a slash'
+)
 list_parser.add_argument('--show-colors', default=False, action='store_true')
 list_parser.set_defaults(func=list_command)
 
@@ -99,10 +112,7 @@ def create_command(args):
         errors = []
         if 'Validation Failed' in res.get('message', ''):
             for error in res.get('errors', []):
-                if error['code'] == 'already_exists':
-                    errors.append('🚫  The name \'{}\' already exists.'.format(name))
-                elif error['code'] == 'invalid':
-                    erros.append('🚫  The field \'{}\' is invalid.'.format(error['field']))
+                errors.append(name, parse_validation_error(error))
 
         if len(errors) == 0:
             errors.append("❌  Failed to create label")
@@ -135,11 +145,13 @@ def delete_command(args):
     if r.status_code == 204:
         print("🗑  Label successfully removed")
     elif r.status_code == 404:
-        print('🚫  The label \'{}\' doesn\'t exist in {}.'.format(args.name, args.repo))
+        msg = '🚫  The label \'{}\' doesn\'t exist in {}.'.format(
+            args.name,
+            args.repo
+        )
+        print(msg)
     else:
         print("❌  Failed to create label")
-
-
 
 
 delete_parser = subparser.add_parser('delete')
