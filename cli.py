@@ -11,6 +11,11 @@ def init(*args, **kwargs):
     )
     subparser = parser.add_subparsers()
 
+def parse():
+    args = parser.parse_args()
+    args.func(args)
+
+
 class Command(object):
     pass
 
