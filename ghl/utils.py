@@ -3,12 +3,12 @@ import os
 import struct
 import sys
 
-import settings
+from . import config
 
 def get_access_token():
-    """ Gets the stored token in settings.__token_file__ """
+    """ Gets the stored token in config.__token_file__ """
     try:
-        with open(settings.__token_file__, 'r') as f:
+        with open(config.__token_file__, 'r') as f:
             return f.read().rstrip()
     except FileNotFoundError as e:
         print('🚫  You seem to be unauthenticated. Please run $ ghl auth'

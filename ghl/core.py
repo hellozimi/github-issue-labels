@@ -1,6 +1,3 @@
-__version__ = '0.1'
-__author__ = 'Simon Andersson'
-
 import argparse
 import os
 import sys
@@ -15,10 +12,10 @@ from colored import (
 )
 from x256 import x256
 
-import cli
-import utils
+from . import cli
+from . import utils
 
-from settings import __github_url__
+from .config import __github_url__
 
 
 """ Initialize cli program """
@@ -218,4 +215,5 @@ def delete_command(args):
         print("❌  Failed to create label.")
 
 
-cli.parse()
+def run():
+    cli.parse()
