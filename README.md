@@ -4,7 +4,7 @@ A CLI to manage labels on your github repos.
 
 ## Todo
 
-- [ ] Update label
+- [x] Update label
 - [ ] Bulk remove labels
 - [ ] Remove all labels
 - [ ] Bulk add labels
