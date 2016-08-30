@@ -100,7 +100,7 @@ def list_command(args):
         c = row['color']
         fmt = '{}{} {} {} {}'.format(
             bg(x256.from_hex(c)),
-            fg(text_color(c)),
+            fg(utils.text_color(c)),
             name.center(spacing),
             attr(0),
             '[#{}]'.format(c) if args.show_colors else '',
