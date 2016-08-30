@@ -2,11 +2,14 @@ import argparse
 import sys
 
 parser = None
+subparser = None
 def init(*args, **kwargs):
     global parser
+    global subparser
     parser = argparse.ArgumentParser(
         *args, **kwargs
     )
+    subparser = parser.add_subparsers()
 
 class Command(object):
     pass
@@ -14,7 +17,6 @@ class Command(object):
 
 def command(*args, **kwargs):
     def wrapped(func):
-        subparser = parser.add_subparsers()
         com = subparser.add_parser(
             *args, **kwargs
         )
