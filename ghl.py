@@ -146,7 +146,7 @@ def delete_command(args):
         print("🗑  Label successfully removed")
     elif r.status_code == 404:
         msg = '🚫  The label \'{}\' doesn\'t exist in {}.'.format(
-            args.name,
+            name,
             args.repo
         )
         print(msg)
