@@ -184,7 +184,7 @@ def delete_command(args):
     """
 
     name = ' '.join(args.name)
-    question = '⛔️  Are you sure you want to delete \'{}\'?'.format(name)
+    question = '\u26d4  Are you sure you want to delete \'{}\'?'.format(name)
     prompt = ' [y/N] '
     while not args.force:
         sys.stdout.write(question + prompt)
@@ -207,6 +207,56 @@ def delete_command(args):
         print(msg)
     else:
         print("\u274c  Failed to create label.")
+
+
+@cli.command(
+    'update',
+    help='Update label with new name and/or color.'
+)
+@cli.argument('repo', **RepoArg(help='The repository you want to update a label at.'))
+@cli.argument(
+    'label_name',
+    **NameArg(help='The name of the label you want to delete.')
+)
+@cli.argument(
+    '--name',
+    **NameArg(help='New name of the label you want to update.')
+)
+@cli.argument(
+    '--color',
+    **ColorArg(help='New color of the label you want to update in hex without'
+                    '# or 0x.')
+)
+def update_command(args):
+    if not any([args.color, args.name]):
+        print('\U0001f6ab  You must pass either a --name and/or --color')
+        sys.exit(1)
+
+    name = ' '.join(args.label_name)
+    params = {'access_token': utils.get_access_token()}
+    url = '{}/repos/{}/labels/{}'.format(__github_url__, args.repo, name)
+
+    payload = { k: v for k, v in vars(args).items()
+                if k in ['color', 'name'] and v }
+
+    if 'name' in payload:
+        payload['name'] = ' '.join(payload['name'])
+
+    r = requests.patch(url, json=payload, params=params)
+
+    if r.status_code == 200:
+        print("\u2705  Label successfully updated")
+    else:
+        res = r.json()
+        errors = []
+        if 'Validation Failed' in res.get('message', ''):
+            for error in res.get('errors', []):
+                errors.append(utils.parse_validation_error(name, error))
+
+        if len(errors) == 0:
+            errors.append("\u274c  Failed to update label.")
+
+        print('\n'.join(errors))
 
 
 def run():
