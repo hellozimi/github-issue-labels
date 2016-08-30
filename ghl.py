@@ -1,3 +1,6 @@
+__version__ = '0.1'
+__author__ = 'Simon Andersson'
+
 import argparse
 import os
 import sys
