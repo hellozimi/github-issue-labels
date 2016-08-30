@@ -88,7 +88,8 @@ def command(*args, **kwargs):
         )
         if hasattr(func, 'arguments'):
             arguments = func.arguments
-            for arg in arguments:
+
+            for arg in reversed(arguments):
                 com.add_argument(*arg[0], **arg[1])
         com.set_defaults(func=func.func)
         return com
