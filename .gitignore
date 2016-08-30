@@ -1,6 +1,9 @@
 .pyc
 __pycache__
-.venv
+.venv/
 .converage
 htmlcov
 .DS_Store
+build
+*.egg-info
+dist/
