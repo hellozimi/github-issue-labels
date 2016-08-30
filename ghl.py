@@ -15,10 +15,8 @@ from x256 import x256
 import cli
 import utils
 
+from settings import __github_url__
 
-__token_file_name__ = '.ghl-token'
-__token_file__ = os.path.join(os.path.expanduser('~'), __token_file_name__)
-__github_url__ = 'https://api.github.com'
 
 
 def get_access_token():
