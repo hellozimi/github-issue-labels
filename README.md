@@ -27,19 +27,20 @@ $ glm list hellozimi/github-label-manager # lists all labels
 ## Documentation
 
 ```
-$ python glm.py --help
-usage: glm [-h] {auth,list,create,delete} ...
+$ glm --help
+usage: glm [-h] {auth,list,create,delete,update} ...
 
-Github Label Manager, helps managing your github issue labels.
+Github label manager, helps managing your github issue labels.
 
 positional arguments:
-  {auth,list,create,delete}
+  {auth,list,create,delete,update}
     auth                Authenticate glm with your personal access token
                         obtained at https://github.com/settings/tokens. This
                         step is required for the program to work.
     list                List all labels in repository.
     create              Create label with name and color
     delete              Delete label from repository.
+    update              Update label with new name and/or color.
 
 optional arguments:
   -h, --help            show this help message and exit
