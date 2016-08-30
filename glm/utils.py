@@ -12,8 +12,8 @@ def get_access_token():
         with open(config.__token_file__, 'r') as f:
             return f.read().rstrip()
     except FileNotFoundError as e:
-        print('\U0001f6ab  You seem to be unauthenticated. Please run $ {} auth '
-              '<token> again.'.format(config.__program_name__))
+        print('\U0001f6ab  You seem to be unauthenticated. Please run $ {} '
+              'auth <token> again.'.format(config.__program_name__))
         sys.exit(1)
 
 def parse_validation_error(name, error):
@@ -66,7 +66,7 @@ def color_validation(value):
         return named_color
 
     if len(value) != 6:
-        raise argparse.ArgumentTypeError('\U0001f6ab  Color must be 6'
+        raise argparse.ArgumentTypeError('\U0001f6ab  Color must be 6 '
                                          'characters long without # or 0x')
     return value
 
@@ -74,7 +74,7 @@ def color_validation(value):
 def repository_validation(value):
     pattern = '^\w+-?\w+(?!-)\/[A-Za-z0-9_.-]+$'
     if re.search(pattern, value) is None:
-        raise argparse.ArgumentTypeError('\U0001f6ab Invalid'
+        raise argparse.ArgumentTypeError('\U0001f6ab Invalid '
                                          '<username/repository> string given.')
 
     return value
@@ -92,6 +92,7 @@ def color_name(color):
     """
 
     return color_name_table.get(color, None)
+
 
 """ Colors from: https://css-tricks.com/snippets/css/named-colors-and-hex-equivalents/ """
 color_name_table = {
