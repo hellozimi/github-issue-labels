@@ -1,5 +1,5 @@
 from setuptools import setup
-from ghl import __version__
+from glm import __version__
 
 with open('README.md') as f:
     readme = f.read()
@@ -8,15 +8,16 @@ with open('LICENSE') as f:
     license = f.read()
 
 setup(
-    name='ghl',
+    name='glm',
     version=__version__,
-    description='Github issue label manager',
+    description='Github Label Manager',
     long_description=readme,
-    url='https://github.com/hellozimi/github-issue-labels',
+    url='https://github.com/hellozimi/github-label-manager',
     author='Simon Andersson',
     author_email='simon@hiddencode.me',
     license=license,
-    py_modules=['ghl'],
+    packages=['glm'],
+    py_modules=['glm'],
     install_requires=[
         'requests',
         'colored',
@@ -24,6 +25,6 @@ setup(
     ],
     zip_safe=True,
     entry_points={
-        'console_scripts': ['ghl = ghl.core:run']
+        'console_scripts': ['glm = glm.core:run']
     }
 )

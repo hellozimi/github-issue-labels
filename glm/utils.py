@@ -11,8 +11,8 @@ def get_access_token():
         with open(config.__token_file__, 'r') as f:
             return f.read().rstrip()
     except FileNotFoundError as e:
-        print('🚫  You seem to be unauthenticated. Please run $ ghl auth '
-              '<token> again.')
+        print('🚫  You seem to be unauthenticated. Please run $ {} auth '
+              '<token> again.'.format(config.__program_name__))
         sys.exit(1)
 
 def parse_validation_error(name, error):

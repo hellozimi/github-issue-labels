@@ -23,16 +23,16 @@ from .config import (
 
 """ Initialize cli program """
 cli.init(
-    prog='ghl',
-    description='''Github issue labels, helps managing your github issue
+    prog='glm',
+    description='''Github label manager, helps managing your github issue
                     labels.''',
-    epilog="Source: https://github.com/hellozimi/github-issue-labels"
+    epilog="Source: https://github.com/hellozimi/github-label-manager"
 )
 
 
 @cli.command(
     'auth',
-    help='''Authenticate ghl with your personal access token obtained at
+    help='''Authenticate glm with your personal access token obtained at
             https://github.com/settings/tokens. This step is required for the
             program to work.'''
 )

@@ -1,4 +1,4 @@
-# Github issue labels
+# Github Label Manager
 
 A CLI to manage labels on your github repos.
 
@@ -19,21 +19,22 @@ A CLI to manage labels on your github repos.
 First go to [Settings > Personal access tokens](https://github.com/settings/tokens) and generate a new token with at least the `repo` scope.
 
 ```
-$ python ghl.py auth <personal github token> # Authenticates with github
-$ python ghl.py list hellozimi/github-issue-labels # lists all labels
+$ python setup.py install
+$ glm auth <personal github token> # Authenticates with github
+$ glm list hellozimi/github-label-manager # lists all labels
 ```
 
 ## Documentation
 
 ```
-$ python ghl.py --help
-usage: ghl [-h] {auth,list,create,delete} ...
+$ python glm.py --help
+usage: glm [-h] {auth,list,create,delete} ...
 
-Github issue labels, helps managing your github issue labels.
+Github Label Manager, helps managing your github issue labels.
 
 positional arguments:
   {auth,list,create,delete}
-    auth                Authenticate ghl with your personal access token
+    auth                Authenticate glm with your personal access token
                         obtained at https://github.com/settings/tokens. This
                         step is required for the program to work.
     list                List all labels in repository.
@@ -43,7 +44,7 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
 
-Source: https://github.com/hellozimi/github-issue-labels
+Source: https://github.com/hellozimi/github-label-manager
 ```
 
 ## Development
@@ -55,7 +56,7 @@ Prerequisite:
 * Pip
 
 ```
-$ git clone git@github.com:hellozimi/github-issue-labels && cd github-issue-labels
+$ git clone git@github.com:hellozimi/github-label-manager && cd github-label-manager
 $ virtualenv .venv
 $ source .venv/bin/activate
 $ pip install -r requirements.txt
