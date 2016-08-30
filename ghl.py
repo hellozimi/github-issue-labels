@@ -12,6 +12,8 @@ from colored import (
 )
 from x256 import x256
 
+import cli
+
 
 __token_file_name__ = '.ghl-token'
 __token_file__ = os.path.join(os.path.expanduser('~'), __token_file_name__)
@@ -46,36 +48,46 @@ def parse_validation_error(name, error):
 
     return None
 
-parser = argparse.ArgumentParser(
+cli.init(
     prog='ghl',
     description='''Github issue labels, helps managing your github issue
                     labels.''',
     epilog="Source: https://github.com/hellozimi/github-issue-labels"
 )
-subparser = parser.add_subparsers()
 
 
+@cli.command('auth',
+    help='''Authenticate ghl with your personal access token obtained at
+            https://github.com/settings/tokens. This step is required for the
+            program to work.'''
+)
+@cli.argument('token',
+    action='store',
+    help='Github personal access token.',
+    metavar='<access token>'
+)
 def auth_command(args):
     f = open(__token_file__, 'w', encoding='utf-8')
     print(args.token, file=f)
     f.close()
     print('🚀  Authentication stored!')
 
-auth_parser = subparser.add_parser(
-    'auth',
-    help='''Authenticate ghl with your personal access token obtained at
-            https://github.com/settings/tokens. This step is required for the
-            program to work.'''
-)
-auth_parser.add_argument(
-    'token',
-    action='store',
-    help='Github personal access token.',
-    metavar='<access token>'
-)
-auth_parser.set_defaults(func=auth_command)
 
-
+@cli.command(
+    'list',
+    help='List all labels in repository.'
+)
+@cli.argument(
+    'repo',
+    help='The repository you want to list labels from.',
+    metavar='<username/repo>'
+)
+@cli.argument(
+    '--show-colors',
+    default=False,
+    action='store_true',
+    help='Pass to show hex color code in list.'
+)
 def list_command(args):
     params = {'access_token': get_access_token()}
 
@@ -100,24 +112,31 @@ def list_command(args):
         )
         print(fmt)
 
-list_parser = subparser.add_parser(
-    'list',
-    help='List all labels in repository.'
+
+
+@cli.command(
+    'create',
+    help='Create label with name and color'
 )
-list_parser.add_argument(
+@cli.argument(
     'repo',
-    help='The repository you want to list labels from.',
-    metavar='<username/repo>'
+    metavar='<username/repo>',
+    help='The repository you want to add labels to.'
 )
-list_parser.add_argument(
-    '--show-colors',
-    default=False,
-    action='store_true',
-    help='Pass to show hex color code in list.'
+@cli.argument(
+    '--name',
+    nargs='+',
+    required=True,
+    help='Name of the label you want to create.',
+    metavar='<name>'
 )
-list_parser.set_defaults(func=list_command)
-
-
+@cli.argument(
+    '--color',
+    required=True,
+    help='Color of the label you want to create in hex without # or 0x.',
+    metavar='<color>',
+    type=color_validation
+)
 def create_command(args):
     params = {'access_token': get_access_token()}
     name = ' '.join(args.name)
@@ -144,32 +163,28 @@ def create_command(args):
         print('\n'.join(errors))
 
 
-create_parser = subparser.add_parser(
-    'create',
-    help='Create label with name and color'
+
+@cli.command(
+    'delete',
+    help='Delete label from repository.'
 )
-create_parser.add_argument(
+@cli.argument(
     'repo',
     metavar='<username/repo>',
     help='The repository you want to add labels to.'
 )
-create_parser.add_argument(
-    '--name',
+@cli.argument(
+    'name',
     nargs='+',
-    required=True,
-    help='Name of the label you want to create.',
-    metavar='<name>'
+    metavar='<label name>',
+    help='The name of the label you want to delete.'
 )
-create_parser.add_argument(
-    '--color',
-    required=True,
-    help='Color of the label you want to create in hex without # or 0x.',
-    metavar='<color>',
-    type=color_validation
+@cli.argument(
+    '-f', '--force',
+    default=False,
+    action='store_true',
+    help='Pass --force if you don\'t want to confirm your action'
 )
-create_parser.set_defaults(func=create_command)
-
-
 def delete_command(args):
     name = ' '.join(args.name)
     question = '⛔️  Are you sure you want to delete \'{}\'?'.format(name)
@@ -197,28 +212,4 @@ def delete_command(args):
         print("❌  Failed to create label.")
 
 
-delete_parser = subparser.add_parser(
-    'delete',
-    help='Delete label from repository.'
-)
-delete_parser.add_argument(
-    'repo',
-    metavar='<username/repo>',
-    help='The repository you want to add labels to.'
-)
-delete_parser.add_argument(
-    'name',
-    nargs='+',
-    metavar='<label name>',
-    help='The name of the label you want to delete.'
-)
-delete_parser.add_argument(
-    '-f', '--force',
-    default=False,
-    action='store_true',
-    help='Pass --force if you don\'t want to confirm your action'
-)
-delete_parser.set_defaults(func=delete_command)
-
-args = parser.parse_args()
-args.func(args)
+cli.parse()
