@@ -9,7 +9,7 @@ A CLI to manage labels on your github repos.
 - [ ] Remove all labels
 - [ ] Bulk add labels
 - [ ] Pass `random` to the --color argument
-- [ ] Pass blue/white/red/* generic named color) to --color
+- [x] Pass blue/white/red/* generic named color) to --color
 - [x] Create setup.py script/executable
 - [ ] Windows & Linux support
 - [ ] Lower python version
