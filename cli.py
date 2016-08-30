@@ -22,6 +22,9 @@ def init(*args, **kwargs):
 
 
 def parse():
+    """ Parses arguments using argparse """
+    if _parser is None:
+        raise AssertionError('Parser not initialized')
     args = _parser.parse_args()
     args.func(args)
 
