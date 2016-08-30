@@ -14,7 +14,12 @@ from x256 import x256
 
 from . import cli
 from . import utils
-
+from .argument_helpers import (
+    RepoArg,
+    ColorArg,
+    ShowColorArg,
+    NameArg
+)
 from .config import (
     __github_url__,
     __token_file__
@@ -56,21 +61,11 @@ def auth_command(args):
     print('🚀  Authentication stored!')
 
 
-@cli.command(
-    'list',
-    help='List all labels in repository.'
+@cli.command('list', help='List all labels in repository.')
+@cli.argument('repo',
+    **RepoArg(help='The repository you want to list labels from.')
 )
-@cli.argument(
-    'repo',
-    help='The repository you want to list labels from.',
-    metavar='<username/repo>'
-)
-@cli.argument(
-    '--show-colors',
-    default=False,
-    action='store_true',
-    help='Pass to show hex color code in list.'
-)
+@cli.argument('--show-colors', **ShowColorArg())
 def list_command(args):
     """ Parses the list command.
     Fetches the target repositry passed in args and prints a colored list
@@ -110,22 +105,21 @@ def list_command(args):
 )
 @cli.argument(
     'repo',
-    metavar='<username/repo>',
-    help='The repository you want to add labels to.'
+    **RepoArg(help='The repository you want to add labels to.')
 )
 @cli.argument(
     '--name',
-    nargs='+',
-    required=True,
-    help='Name of the label you want to create.',
-    metavar='<name>'
+    **NameArg(
+        required=True,
+        help='Name of the label you want to create.'
+    )
 )
 @cli.argument(
     '--color',
-    required=True,
-    help='Color of the label you want to create in hex without # or 0x.',
-    metavar='<color>',
-    type=utils.color_validation
+    **ColorArg(
+        required=True,
+        help='Color of the label you want to create in hex without # or 0x.'
+    )
 )
 def create_command(args):
     """ Parses the create command.
@@ -167,14 +161,11 @@ def create_command(args):
 )
 @cli.argument(
     'repo',
-    metavar='<username/repo>',
-    help='The repository you want to add labels to.'
+    **RepoArg(help='The repository you want to add labels to.')
 )
 @cli.argument(
     'name',
-    nargs='+',
-    metavar='<label name>',
-    help='The name of the label you want to delete.'
+    **NameArg(help='The name of the label you want to delete.')
 )
 @cli.argument(
     '-f', '--force',
