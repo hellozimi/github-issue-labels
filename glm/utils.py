@@ -67,6 +67,13 @@ def color_validation(value):
     if len(value) != 6:
         raise argparse.ArgumentTypeError('Color must be 6 characters long',
                                          'without # or 0x')
+
+def repository_validation(value):
+    pattern = '^\w+-?\w+(?!-)\/[A-Za-z0-9_.-]+$'
+    if re.search(pattern, value) is None:
+        raise argparse.ArgumentTypeError('\U0001f6ab Invalid'
+                                         '<username/repository> string given.')
+
     return value
 
 
