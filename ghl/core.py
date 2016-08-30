@@ -15,7 +15,10 @@ from x256 import x256
 from . import cli
 from . import utils
 
-from .config import __github_url__
+from .config import (
+    __github_url__,
+    __token_file__
+)
 
 
 """ Initialize cli program """
