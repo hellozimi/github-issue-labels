@@ -1,18 +1,20 @@
 import argparse
-import sys
 
-parser = None
-subparser = None
+_parser = None
+_subparser = None
+
+
 def init(*args, **kwargs):
-    global parser
-    global subparser
-    parser = argparse.ArgumentParser(
+    global _parser
+    global _subparser
+    _parser = argparse.ArgumentParser(
         *args, **kwargs
     )
-    subparser = parser.add_subparsers()
+    _subparser = _parser.add_subparsers()
+
 
 def parse():
-    args = parser.parse_args()
+    args = _parser.parse_args()
     args.func(args)
 
 
@@ -22,7 +24,7 @@ class Command(object):
 
 def command(*args, **kwargs):
     def wrapped(func):
-        com = subparser.add_parser(
+        com = _subparser.add_parser(
             *args, **kwargs
         )
         if hasattr(func, 'arguments'):
