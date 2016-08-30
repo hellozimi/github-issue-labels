@@ -82,7 +82,7 @@ def list_command(args):
     res = r.json()
 
     if len(res) == 0:
-        print("❗️  No labels found")
+        print("\u2757  No labels found")
         sys.exit(0)
 
     spacing = len(max([x['name'] for x in res], key=len))
@@ -141,7 +141,7 @@ def create_command(args):
     r = requests.post(url, json=payload, params=params)
 
     if r.status_code == 201:
-        print("✅  Label successfully created")
+        print("\u2705  Label successfully created")
     else:
         res = r.json()
         errors = []
@@ -150,7 +150,7 @@ def create_command(args):
                 errors.append(utils.parse_validation_error(name, error))
 
         if len(errors) == 0:
-            errors.append("❌  Failed to create label.")
+            errors.append("\u274c  Failed to create label.")
 
         print('\n'.join(errors))
 
@@ -198,15 +198,15 @@ def delete_command(args):
     url = '{}/repos/{}/labels/{}'.format(__github_url__, args.repo, name)
     r = requests.delete(url, params=params)
     if r.status_code == 204:
-        print("🗑  Label successfully removed")
+        print("\U0001f5d1  Label successfully removed")
     elif r.status_code == 404:
-        msg = '🚫  The label \'{}\' doesn\'t exist in {}.'.format(
+        msg = '\U0001f6ab  The label \'{}\' doesn\'t exist in {}.'.format(
             name,
             args.repo
         )
         print(msg)
     else:
-        print("❌  Failed to create label.")
+        print("\u274c  Failed to create label.")
 
 
 def run():

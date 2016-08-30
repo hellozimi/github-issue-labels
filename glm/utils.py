@@ -1,5 +1,6 @@
 import argparse
 import os
+import re
 import struct
 import sys
 
@@ -11,7 +12,7 @@ def get_access_token():
         with open(config.__token_file__, 'r') as f:
             return f.read().rstrip()
     except FileNotFoundError as e:
-        print('🚫  You seem to be unauthenticated. Please run $ {} auth '
+        print('\U0001f6ab  You seem to be unauthenticated. Please run $ {} auth '
               '<token> again.'.format(config.__program_name__))
         sys.exit(1)
 
@@ -27,9 +28,9 @@ def parse_validation_error(name, error):
     """
 
     if error['code'] == 'already_exists':
-        return '🚫  The name \'{}\' already exists.'.format(name)
+        return '\U0001f6ab  The name \'{}\' already exists.'.format(name)
     elif error['code'] == 'invalid':
-        return '🚫  The field \'{}\' is invalid.'.format(error['field'])
+        return '\U0001f6ab  The field \'{}\' is invalid.'.format(error['field'])
 
     return None
 
@@ -65,8 +66,10 @@ def color_validation(value):
         return named_color
 
     if len(value) != 6:
-        raise argparse.ArgumentTypeError('Color must be 6 characters long',
-                                         'without # or 0x')
+        raise argparse.ArgumentTypeError('\U0001f6ab  Color must be 6'
+                                         'characters long without # or 0x')
+    return value
+
 
 def repository_validation(value):
     pattern = '^\w+-?\w+(?!-)\/[A-Za-z0-9_.-]+$'
