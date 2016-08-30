@@ -5,6 +5,14 @@ _subparser = None
 
 
 def init(*args, **kwargs):
+    """ Initializes parser and subparser.
+
+    Args:
+        args: List of arguments mirrored to argparser.ArgumentParser
+        kwargs: Dict of arguments mirrored to argparser.ArgumentParser
+
+    """
+
     global _parser
     global _subparser
     _parser = argparse.ArgumentParser(
@@ -19,10 +27,31 @@ def parse():
 
 
 class Command(object):
+    """ The command proxy object.
+
+    Used to store argparser subparser values in it.
+
+    Attributes:
+        arguments: list
+        func: the callback function
+
+    """
+
     pass
 
 
 def _create_command(func, arguments=None, callback=None):
+    """ Creates command proxy and sets passed values
+
+    Args:
+        func: The wrapped parameter from the decorator
+        arguments: List of tuples from the argument decorator
+        callback: The func to be set as default in argparser
+
+    Returns:
+        A proxy Command object
+
+    """
 
     if not isinstance(func, Command):
         func = Command()
@@ -37,8 +66,13 @@ def _create_command(func, arguments=None, callback=None):
         func.func = callback
 
     return func
+
+
 def command(*args, **kwargs):
+    """ Adds a parser to the subparser """
+
     def wrapped(func):
+
         if not isinstance(func, Command):
             func = _create_command(func, callback=func)
 
@@ -55,6 +89,8 @@ def command(*args, **kwargs):
 
 
 def argument(*args, **kwargs):
+    """ Adds an argument to the Command object"""
+
     def wrapped(func):
         opts = (args, kwargs)
         func = _create_command(func, arguments=opts, callback=func)
