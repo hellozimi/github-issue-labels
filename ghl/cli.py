@@ -1,4 +1,5 @@
 import argparse
+import sys
 
 _parser = None
 _subparser = None
@@ -26,7 +27,10 @@ def parse():
     if _parser is None:
         raise AssertionError('Parser not initialized')
     args = _parser.parse_args()
-    args.func(args)
+    if len(sys.argv[1:]) > 0:
+        args.func(args)
+    else:
+        _parser.print_help()
 
 
 class Command(object):
