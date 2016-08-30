@@ -10,7 +10,7 @@ A CLI to manage labels on your github repos.
 - [ ] Bulk add labels
 - [ ] Pass `random` to the --color argument
 - [ ] Pass blue/white/red/* generic named color) to --color
-- [ ] Create setup.py script/executable
+- [x] Create setup.py script/executable
 - [ ] Windows & Linux support
 - [ ] Lower python version
 
