@@ -3,6 +3,7 @@ import sys
 
 parser = None
 def init(*args, **kwargs):
+    global parser
     parser = argparse.ArgumentParser(
         *args, **kwargs
     )
