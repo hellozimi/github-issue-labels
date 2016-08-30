@@ -72,6 +72,10 @@ def list_command(args):
     r = requests.get(url, params=params)
     res = r.json()
 
+    if len(res) == 0:
+        print("❗️  No labels found")
+        sys.exit(0)
+
     spacing = len(max([x['name'] for x in res], key=len))
     for row in res:
         name = row['name']
