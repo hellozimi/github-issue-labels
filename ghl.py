@@ -34,12 +34,14 @@ cli.init(
 )
 
 
-@cli.command('auth',
+@cli.command(
+    'auth',
     help='''Authenticate ghl with your personal access token obtained at
             https://github.com/settings/tokens. This step is required for the
             program to work.'''
 )
-@cli.argument('token',
+@cli.argument(
+    'token',
     action='store',
     help='Github personal access token.',
     metavar='<access token>'
@@ -91,7 +93,6 @@ def list_command(args):
         print(fmt)
 
 
-
 @cli.command(
     'create',
     help='Create label with name and color'
@@ -139,7 +140,6 @@ def create_command(args):
             errors.append("❌  Failed to create label.")
 
         print('\n'.join(errors))
-
 
 
 @cli.command(
