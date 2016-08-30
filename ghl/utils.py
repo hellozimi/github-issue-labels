@@ -11,7 +11,7 @@ def get_access_token():
         with open(config.__token_file__, 'r') as f:
             return f.read().rstrip()
     except FileNotFoundError as e:
-        print('🚫  You seem to be unauthenticated. Please run $ ghl auth'
+        print('🚫  You seem to be unauthenticated. Please run $ ghl auth '
               '<token> again.')
         sys.exit(1)
 
