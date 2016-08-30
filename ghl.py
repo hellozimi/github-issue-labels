@@ -13,6 +13,7 @@ from colored import (
 from x256 import x256
 
 import cli
+import utils
 
 
 __token_file_name__ = '.ghl-token'
@@ -24,29 +25,6 @@ def get_access_token():
     with open(__token_file__, 'r') as f:
         return f.read().rstrip()
 
-
-def text_color(color):
-    (r, g, b) = struct.unpack('BBB', bytes.fromhex(color))
-    a = 1 - (0.299 * r + 0.587 * g + 0.114 * b) / 255
-    if a > 0.5:
-        return 'white'
-    return 'black'
-
-
-def color_validation(value):
-    if len(value) != 6:
-        raise argparse.ArgumentTypeError('Color must be 6 characters long'
-                                         'without # or 0x')
-    return value
-
-
-def parse_validation_error(name, error):
-    if error['code'] == 'already_exists':
-        return '🚫  The name \'{}\' already exists.'.format(name)
-    elif error['code'] == 'invalid':
-        return '🚫  The field \'{}\' is invalid.'.format(error['field'])
-
-    return None
 
 cli.init(
     prog='ghl',
@@ -135,7 +113,7 @@ def list_command(args):
     required=True,
     help='Color of the label you want to create in hex without # or 0x.',
     metavar='<color>',
-    type=color_validation
+    type=utils.color_validation
 )
 def create_command(args):
     params = {'access_token': get_access_token()}
@@ -155,7 +133,7 @@ def create_command(args):
         errors = []
         if 'Validation Failed' in res.get('message', ''):
             for error in res.get('errors', []):
-                errors.append(parse_validation_error(name, error))
+                errors.append(utils.parse_validation_error(name, error))
 
         if len(errors) == 0:
             errors.append("❌  Failed to create label.")
