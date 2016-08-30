@@ -25,7 +25,7 @@ def get_access_token():
     with open(__token_file__, 'r') as f:
         return f.read().rstrip()
 
-
+""" Initialize cli program """
 cli.init(
     prog='ghl',
     description='''Github issue labels, helps managing your github issue
@@ -47,6 +47,13 @@ cli.init(
     metavar='<access token>'
 )
 def auth_command(args):
+    """ Parses the authentication command.
+    Stores a file at __token_file__ with the personal access token in it.
+
+    Args:
+        args: Object with a personal github token string in it
+    """
+
     f = open(__token_file__, 'w', encoding='utf-8')
     print(args.token, file=f)
     f.close()
@@ -69,6 +76,14 @@ def auth_command(args):
     help='Pass to show hex color code in list.'
 )
 def list_command(args):
+    """ Parses the list command.
+    Fetches the target repositry passed in args and prints a colored list
+
+    Args:
+        args: Object with repo in it
+
+    """
+
     params = {'access_token': get_access_token()}
 
     url = '{}/repos/{}/labels'.format(__github_url__, args.repo)
@@ -117,6 +132,14 @@ def list_command(args):
     type=utils.color_validation
 )
 def create_command(args):
+    """ Parses the create command.
+    Creates a new label at the wanted location.
+
+    Args:
+        args: Object with repo, name and color in it
+
+    """
+
     params = {'access_token': get_access_token()}
     name = ' '.join(args.name)
     payload = {
@@ -164,6 +187,15 @@ def create_command(args):
     help='Pass --force if you don\'t want to confirm your action'
 )
 def delete_command(args):
+    """ Parses the delete command.
+    Deletes a label at the wanted location. Ask for confirmation unless
+        -f/--force is passed
+
+    Args:
+        args: Object with repo and name in it. Optionally force as boolean.
+
+    """
+
     name = ' '.join(args.name)
     question = '⛔️  Are you sure you want to delete \'{}\'?'.format(name)
     prompt = ' [y/N] '
