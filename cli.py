@@ -22,8 +22,26 @@ class Command(object):
     pass
 
 
+def _create_command(func, arguments=None, callback=None):
+
+    if not isinstance(func, Command):
+        func = Command()
+
+    if arguments is not None:
+        if hasattr(func, 'arguments'):
+            func.arguments.append(arguments)
+        else:
+            func.arguments = [arguments]
+
+    if not hasattr(func, 'func'):
+        func.func = callback
+
+    return func
 def command(*args, **kwargs):
     def wrapped(func):
+        if not isinstance(func, Command):
+            func = _create_command(func, callback=func)
+
         com = _subparser.add_parser(
             *args, **kwargs
         )
@@ -39,17 +57,6 @@ def command(*args, **kwargs):
 def argument(*args, **kwargs):
     def wrapped(func):
         opts = (args, kwargs)
-        callback = func
-
-        if not isinstance(func, Command):
-            func = Command()
-
-        if hasattr(func, 'arguments'):
-            func.arguments.append(opts)
-        else:
-            func.arguments = [opts]
-
-        if not hasattr(func, 'func'):
-            func.func = callback
+        func = _create_command(func, arguments=opts, callback=func)
         return func
     return wrapped
