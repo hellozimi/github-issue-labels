@@ -1,6 +1,19 @@
 import argparse
+import os
 import struct
+import sys
 
+import settings
+
+def get_access_token():
+    """ Gets the stored token in settings.__token_file__ """
+    try:
+        with open(settings.__token_file__, 'r') as f:
+            return f.read().rstrip()
+    except FileNotFoundError as e:
+        print('🚫  You seem to be unauthenticated. Please run $ ghl auth'
+              '<token> again.')
+        sys.exit(1)
 
 def parse_validation_error(name, error):
     """ Parses github error and returns proper error messages

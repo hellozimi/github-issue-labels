@@ -18,11 +18,6 @@ import utils
 from settings import __github_url__
 
 
-
-def get_access_token():
-    with open(__token_file__, 'r') as f:
-        return f.read().rstrip()
-
 """ Initialize cli program """
 cli.init(
     prog='ghl',
@@ -82,7 +77,7 @@ def list_command(args):
 
     """
 
-    params = {'access_token': get_access_token()}
+    params = {'access_token': utils.get_access_token()}
 
     url = '{}/repos/{}/labels'.format(__github_url__, args.repo)
     r = requests.get(url, params=params)
@@ -138,7 +133,7 @@ def create_command(args):
 
     """
 
-    params = {'access_token': get_access_token()}
+    params = {'access_token': utils.get_access_token()}
     name = ' '.join(args.name)
     payload = {
         'name': name,
@@ -205,7 +200,7 @@ def delete_command(args):
         elif choice == 'y' or choice == 'yes':
             break
 
-    params = {'access_token': get_access_token()}
+    params = {'access_token': utils.get_access_token()}
     url = '{}/repos/{}/labels/{}'.format(__github_url__, args.repo, name)
     r = requests.delete(url, params=params)
     if r.status_code == 204:
